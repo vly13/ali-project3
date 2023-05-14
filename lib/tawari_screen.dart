@@ -166,17 +166,18 @@ class _TawariScreenState extends State<TawariScreen> {
         .collection('Users')
         .doc(uid)
         .get())['Full Name'] as String;
+
     final NationaID = (await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
-        .get())['National ID'] as String;
+        .get())['Nationa ID'] as String;
 
     if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
         await FirebaseFirestore.instance.collection('requests').doc().set(
           {
             'location':
-                'https://www.google.com/maps/@${currentLocation!.longitude},${currentLocation!.latitude},16z',
+                'https://www.google.com/maps/@${currentLocation!.latitude},${currentLocation!.longitude},16z',
             'userName': userName,
             'problem_desc': problemController.text,
             'problem_img': url,
