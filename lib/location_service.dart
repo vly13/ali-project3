@@ -16,7 +16,7 @@ class LocationService {
     );
   }
 
-  Future<AddressModel> getCurrentLocation() async {
+  Future<Position> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -38,6 +38,6 @@ class LocationService {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
     var position = await Geolocator.getCurrentPosition();
-    return _getAddressFromLatLong(position);
+    return position;
   }
 }

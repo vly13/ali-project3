@@ -4,6 +4,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:project2/Screens/page1.dart';
@@ -25,8 +26,7 @@ class _TawariScreenState extends State<TawariScreen> {
   final problemController = TextEditingController();
   bool isLoading = false;
 
-  AddressModel currentLocation =
-      const AddressModel(country: '', name: '', postalCode: '');
+  Position? currentLocation;
   AddressModel emptyLocation =
       const AddressModel(country: '', name: '', postalCode: '');
 
@@ -164,11 +164,12 @@ class _TawariScreenState extends State<TawariScreen> {
         .doc(uid)
         .get())['Full Name'] as String;
 
-    if (userName.isNotEmpty && currentLocation != emptyLocation) {
+    if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
         await FirebaseFirestore.instance.collection('requests').doc().set(
           {
-            'location': currentLocation.toMap(),
+            'location':
+                'https://www.google.com/maps/@${currentLocation!.longitude},${currentLocation!.latitude},16z',
             'userName': userName,
             'problem_desc': problemController.text,
             'problem_img': url,
