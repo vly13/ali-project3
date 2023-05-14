@@ -166,6 +166,10 @@ class _TawariScreenState extends State<TawariScreen> {
         .collection('Users')
         .doc(uid)
         .get())['Full Name'] as String;
+    final NationaID = (await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get())['National ID'] as String;
 
     if (userName.isNotEmpty && currentLocation != emptyLocation) {
       if (url.isNotEmpty) {
