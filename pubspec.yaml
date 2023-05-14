@@ -38,6 +38,7 @@ dependencies:
   firebase_core: ^2.7.0
   cloud_firestore: ^4.7.0
   firebase_auth: ^4.2.9
+  firebase_storage: ^11.2.0
   google_sign_in: ^6.0.1
   sign_in_button: ^3.0.0
   image_picker: ^0.8.7+1
@@ -46,7 +47,6 @@ dependencies:
   firebase_phone_auth_handler: ^1.0.8
   fluttertoast: ^8.2.1
   email_validator: ^2.1.17
-  firebase_storage: ^11.2.0
   permission_handler: ^10.2.0
   equatable: ^2.0.5
   geocoding: ^2.1.0

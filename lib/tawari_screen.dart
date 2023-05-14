@@ -26,9 +26,9 @@ class _TawariScreenState extends State<TawariScreen> {
   bool isLoading = false;
 
   AddressModel currentLocation =
-      const AddressModel(country: '', name: '', postalCode: '');
+  const AddressModel(country: '', name: '', postalCode: '');
   AddressModel emptyLocation =
-      const AddressModel(country: '', name: '', postalCode: '');
+  const AddressModel(country: '', name: '', postalCode: '');
 
   Future<void> uploadimage(ImageSource source) async {
     final img = await imagepicker.pickImage(source: source);
@@ -60,7 +60,7 @@ class _TawariScreenState extends State<TawariScreen> {
         title: Text(
           widget.title,
           style:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           onPressed: () {
@@ -99,19 +99,14 @@ class _TawariScreenState extends State<TawariScreen> {
             const SizedBox(
               height: 12,
             ),
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
+            TextButton.icon(
                 onPressed: () async {
                   currentLocation =
-                      await LocationService().getCurrentLocation();
+                  await LocationService().getCurrentLocation();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF00B8D4),
-                ),
-                child: const Text('Send My Location'),
-              ),
-            ),
+                icon: const Icon(Icons.location_on_outlined),
+                label: const Text('إرسال موقعي الحالي')),
+
             isLoading
                 ? const CircularProgressIndicator()
                 : Container(
@@ -122,8 +117,6 @@ class _TawariScreenState extends State<TawariScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (problemController.text.isNotEmpty) {
-                          CoolAlert.show(
-                              context: context, type: CoolAlertType.loading);
                           _uploadUserData();
                         }
                       },
