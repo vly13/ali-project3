@@ -116,7 +116,9 @@ class _TawariScreenState extends State<TawariScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         CoolAlert.show(
-                            context: context, type: CoolAlertType.loading);
+                            barrierDismissible: false,
+                            context: context,
+                            type: CoolAlertType.loading);
                         if (problemController.text.isNotEmpty) {
                           _uploadUserData();
                         }
@@ -175,11 +177,14 @@ class _TawariScreenState extends State<TawariScreen> {
         ).then((value) {
           CoolAlert.show(
               context: context,
+              barrierDismissible: false,
               type: CoolAlertType.success,
               onConfirmBtnTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
-              });
+                Navigator.pop(context);
+              },
+              onCancelBtnTap: () {
+                Navigator.pop(context);
+              }).then((value) => Navigator.pop(context));
         });
       }
 
