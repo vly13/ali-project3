@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class porposal extends StatelessWidget {
-  const porposal({Key? key}) : super(key: key);
+   porposal({Key? key}) : super(key: key);
+
+  final _porposalController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class porposal extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(28),
             child: TextFormField(
+              controller: _porposalController,
               textAlign: TextAlign.right,
               maxLines: 15,
               decoration: InputDecoration(
