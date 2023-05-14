@@ -26,9 +26,9 @@ class _TawariScreenState extends State<TawariScreen> {
   bool isLoading = false;
 
   AddressModel currentLocation =
-  const AddressModel(country: '', name: '', postalCode: '');
+      const AddressModel(country: '', name: '', postalCode: '');
   AddressModel emptyLocation =
-  const AddressModel(country: '', name: '', postalCode: '');
+      const AddressModel(country: '', name: '', postalCode: '');
 
   Future<void> uploadimage(ImageSource source) async {
     final img = await imagepicker.pickImage(source: source);
@@ -60,7 +60,7 @@ class _TawariScreenState extends State<TawariScreen> {
         title: Text(
           widget.title,
           style:
-          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           onPressed: () {
@@ -102,11 +102,10 @@ class _TawariScreenState extends State<TawariScreen> {
             TextButton.icon(
                 onPressed: () async {
                   currentLocation =
-                  await LocationService().getCurrentLocation();
+                      await LocationService().getCurrentLocation();
                 },
                 icon: const Icon(Icons.location_on_outlined),
                 label: const Text('إرسال موقعي الحالي')),
-
             isLoading
                 ? const CircularProgressIndicator()
                 : Container(
@@ -116,6 +115,8 @@ class _TawariScreenState extends State<TawariScreen> {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
+                        CoolAlert.show(
+                            context: context, type: CoolAlertType.loading);
                         if (problemController.text.isNotEmpty) {
                           _uploadUserData();
                         }
@@ -159,8 +160,7 @@ class _TawariScreenState extends State<TawariScreen> {
     final userName = (await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
-        .get())['Full Name'] as String; 
-        
+        .get())['Full Name'] as String;
 
     if (userName.isNotEmpty && currentLocation != emptyLocation) {
       if (url.isNotEmpty) {
