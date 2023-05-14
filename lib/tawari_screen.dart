@@ -108,30 +108,33 @@ class _TawariScreenState extends State<TawariScreen> {
                 label: const Text('إرسال موقعي الحالي')),
             isLoading
                 ? const CircularProgressIndicator()
-                : Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(45)),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: 60,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        CoolAlert.show(
-                            barrierDismissible: false,
-                            context: context,
-                            type: CoolAlertType.loading);
-                        if (problemController.text.isNotEmpty) {
-                          _uploadUserData();
-                        }
-                      },
-                      child: const Text(
-                        'ارسال البلاغ ',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                : const SizedBox(
+                    height: 12,
                   ),
+            Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(45)),
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () {
+                  CoolAlert.show(
+                      barrierDismissible: false,
+                      context: context,
+                      type: CoolAlertType.loading);
+                  if (problemController.text.isNotEmpty) {
+                    _uploadUserData();
+                  }
+                },
+                child: const Text(
+                  'ارسال البلاغ ',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -164,7 +167,7 @@ class _TawariScreenState extends State<TawariScreen> {
         .doc(uid)
         .get())['Full Name'] as String;
 
-    if (userName.isNotEmpty && currentLocation != null) {
+    if (userName.isNotEmpty && currentLocation != emptyLocation) {
       if (url.isNotEmpty) {
         await FirebaseFirestore.instance.collection('requests').doc().set(
           {
@@ -173,6 +176,7 @@ class _TawariScreenState extends State<TawariScreen> {
             'userName': userName,
             'problem_desc': problemController.text,
             'problem_img': url,
+            'Nationa ID': NationaID,
           },
           SetOptions(merge: true),
         ).then((value) {
