@@ -8,6 +8,7 @@ class LocationService {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark placemark = placemarks[0];
+   
     return AddressModel(
       name: placemark.name!,
       postalCode: placemark.postalCode!,

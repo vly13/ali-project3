@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:project2/Screens/page1.dart';
 import 'package:project2/address_model,.dart';
@@ -42,7 +42,7 @@ class _TawariScreenState extends State<TawariScreen> {
 
   @override
   void initState() {
-    var status = Permission.location.request().then((value) {
+    Permission.location.request().then((value) {
       if (value.isDenied) {
         Permission.location.request();
       }
@@ -122,6 +122,8 @@ class _TawariScreenState extends State<TawariScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (problemController.text.isNotEmpty) {
+                          CoolAlert.show(
+                              context: context, type: CoolAlertType.loading);
                           _uploadUserData();
                         }
                       },
@@ -164,7 +166,8 @@ class _TawariScreenState extends State<TawariScreen> {
     final userName = (await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
-        .get())['Full Name'] as String;
+        .get())['Full Name'] as String; 
+        
 
     if (userName.isNotEmpty && currentLocation != emptyLocation) {
       if (url.isNotEmpty) {
@@ -176,8 +179,15 @@ class _TawariScreenState extends State<TawariScreen> {
             'problem_img': url,
           },
           SetOptions(merge: true),
-        ).then((value) => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeScreen())));
+        ).then((value) {
+          CoolAlert.show(
+              context: context,
+              type: CoolAlertType.success,
+              onConfirmBtnTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+              });
+        });
       }
 
       isLoading = false;
