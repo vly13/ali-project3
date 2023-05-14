@@ -26,9 +26,9 @@ class _TawariScreenState extends State<TawariScreen> {
   bool isLoading = false;
 
   AddressModel currentLocation =
-      const AddressModel(country: '', name: '', postalCode: '');
+  const AddressModel(country: '', name: '', postalCode: '');
   AddressModel emptyLocation =
-      const AddressModel(country: '', name: '', postalCode: '');
+  const AddressModel(country: '', name: '', postalCode: '');
 
   Future<void> uploadimage(ImageSource source) async {
     final img = await imagepicker.pickImage(source: source);
@@ -60,7 +60,7 @@ class _TawariScreenState extends State<TawariScreen> {
         title: Text(
           widget.title,
           style:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           onPressed: () {
@@ -99,41 +99,39 @@ class _TawariScreenState extends State<TawariScreen> {
             const SizedBox(
               height: 12,
             ),
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
+            TextButton.icon(
                 onPressed: () async {
                   currentLocation =
-                      await LocationService().getCurrentLocation();
+                  await LocationService().getCurrentLocation();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF00B8D4),
-                ),
-                child: const Text('Send My Location'),
-              ),
-            ),
+                icon: const Icon(Icons.location_on_outlined),
+                label: const Text('إرسال موقعي الحالي')),
+
             isLoading
                 ? const CircularProgressIndicator()
-                : Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(45)),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: 60,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (problemController.text.isNotEmpty) {
-                          _uploadUserData();
-                        }
-                      },
-                      child: const Text(
-                        'ارسال البلاغ ',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                :
+            const SizedBox(
+              height: 12),
+            Container(
+              decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(25)),
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (problemController.text.isNotEmpty) {
+                    _uploadUserData();
+                  }
+                },
+                child: const Text(
+                  'ارسال البلاغ ',
+                  style: TextStyle(
+                    // fontSize: 25,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
