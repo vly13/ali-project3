@@ -33,7 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
       "Block": _blockController.text,
       "Street": _streetController.text,
       "City": _cityController.text,
-      "Nationa ID": _nationalIDController.text,
+      "National ID": _nationalIDController.text,
       "Phone Number": _phoneNumberController.text,
     });
   }

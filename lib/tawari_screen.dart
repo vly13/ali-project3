@@ -167,10 +167,14 @@ class _TawariScreenState extends State<TawariScreen> {
         .doc(uid)
         .get())['Full Name'] as String;
 
-    final NationaID = (await FirebaseFirestore.instance
+    final NationalID = (await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
-        .get())['Nationa ID'] as String;
+        .get())['National ID'] as dynamic;
+
+    // final Uid = (await FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc(FirebaseAuth.instance.currentUser!.uid));
 
     if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
@@ -181,11 +185,12 @@ class _TawariScreenState extends State<TawariScreen> {
             'userName': userName,
             'problem_desc': problemController.text,
             'problem_img': url,
-            'Nationa ID': NationaID,
+            'Nationa ID': NationalID,
+            'Uid': Uid,
           },
           SetOptions(merge: true),
-        ).then((value) {
-          CoolAlert.show(
+        ).then((value) async {
+          await CoolAlert.show(
               context: context,
               barrierDismissible: false,
               type: CoolAlertType.success,
