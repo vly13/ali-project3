@@ -186,7 +186,7 @@ class _TawariScreenState extends State<TawariScreen> {
             'problem_desc': problemController.text,
             'problem_img': url,
             'Nationa ID': NationalID,
-            'Uid': Uid,
+            // 'Uid': Uid,
           },
           SetOptions(merge: true),
         ).then((value) async {
