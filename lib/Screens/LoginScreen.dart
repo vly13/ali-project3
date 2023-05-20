@@ -13,11 +13,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emilController = TextEditingController();
   final _passwordController = TextEditingController();
 
-
   // Future signIn() async {
-    // await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //     email: _emilController.text.trim(),
-    //     password: _passwordController.text.trim());
+  // await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //     email: _emilController.text.trim(),
+  //     password: _passwordController.text.trim());
 
   // }
 
@@ -92,29 +91,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                        try {
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  "No user found for that email.",
-                                ),
+                      try {
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .signInWithEmailAndPassword(
+                          email: _emilController.text,
+                          password: _passwordController.text,
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                "No user found for that email.",
                               ),
-                            );
-                          } else if (e.code == 'wrong-password') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  "Wrong password.",
-                                ),
+                            ),
+                          );
+                        } else if (e.code == 'wrong-password') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                "Wrong password.",
                               ),
-                            );
-                          }
+                            ),
+                          );
                         }
-                        Navigator.of(context).pushNamed('/');
+                      }
+                      Navigator.of(context).pushNamed('/');
                     },
                     child: const Text("sign in"),
                   ),

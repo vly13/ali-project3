@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:project2/Screens/Auth.dart';
 import 'package:project2/Screens/LoginScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project2/Screens/SignUpScreen.dart';
-import 'package:project2/Screens/Splash.dart';
+import 'package:project2/Screens/NoInternet.dart';
 import 'package:project2/Screens/page1.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
- 
   runApp(const MyApp());
 }
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: Colors.blue),
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/': (context) => const Auth(),
         'signupScreen': (context) => const SignupScreen(),
         'loginScreen': (context) => const LoginScreen(),
         'homeScreen': (context) => HomeScreen(),
