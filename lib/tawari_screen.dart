@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:project2/Screens/page1.dart';
 import 'package:project2/address_model,.dart';
 import 'package:project2/location_service.dart';
 
@@ -93,19 +92,23 @@ class _TawariScreenState extends State<TawariScreen> {
               height: 12,
             ),
             TextButton.icon(
-                onPressed: () async => await uploadimage(ImageSource.camera),
-                icon: const Icon(Icons.add_a_photo),
-                label: const Text('الكاميرا')),
-            const SizedBox(
-              height: 12,
+              onPressed: () async => await uploadimage(ImageSource.camera),
+              icon: const Icon(Icons.add_a_photo),
+              label: const Text(
+                'الكاميرا',
+                style: TextStyle(fontSize: 17),
+              ),
             ),
             TextButton.icon(
-                onPressed: () async {
-                  currentLocation =
-                      await LocationService().getCurrentLocation();
-                },
-                icon: const Icon(Icons.location_on_outlined),
-                label: const Text('إرسال موقعي الحالي')),
+              onPressed: () async {
+                currentLocation = await LocationService().getCurrentLocation();
+              },
+              icon: const Icon(Icons.location_on_outlined),
+              label: const Text(
+                'تحديد موقعي الحالي',
+                style: TextStyle(fontSize: 17),
+              ),
+            ),
             isLoading
                 ? const CircularProgressIndicator()
                 : const SizedBox(
@@ -114,8 +117,8 @@ class _TawariScreenState extends State<TawariScreen> {
             Container(
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(45)),
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: 40,
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: 30,
               child: ElevatedButton(
                 onPressed: () {
                   CoolAlert.show(
@@ -129,7 +132,7 @@ class _TawariScreenState extends State<TawariScreen> {
                 child: const Text(
                   'ارسال البلاغ ',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
