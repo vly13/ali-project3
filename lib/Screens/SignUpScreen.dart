@@ -37,7 +37,6 @@ class _SignupScreenState extends State<SignupScreen> {
       "Phone Number": _phoneNumberController.text,
     });
   }
-
   void loginScreen() {
     Navigator.of(context).pushReplacementNamed('loginScreen');
   }
@@ -144,6 +143,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||

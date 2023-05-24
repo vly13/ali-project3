@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:project2/address_model,.dart';
 import 'package:project2/location_service.dart';
@@ -79,7 +80,7 @@ class _TawariScreenState extends State<TawariScreen> {
               child: TextFormField(
                 controller: problemController,
                 textAlign: TextAlign.right,
-                maxLines: 15,
+                maxLines: 10,
                 decoration: InputDecoration(
                     hintText: "كتابة المشكلة",
                     enabledBorder: OutlineInputBorder(
@@ -101,6 +102,10 @@ class _TawariScreenState extends State<TawariScreen> {
             ),
             TextButton.icon(
               onPressed: () async {
+                // CoolAlert.show(
+                //     barrierDismissible: false,
+                //     context: context,
+                //     type: CoolAlertType.loading);
                 currentLocation = await LocationService().getCurrentLocation();
               },
               icon: const Icon(Icons.location_on_outlined),
@@ -118,7 +123,7 @@ class _TawariScreenState extends State<TawariScreen> {
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(45)),
               width: MediaQuery.of(context).size.width * 0.5,
-              height: 30,
+              height: 33,
               child: ElevatedButton(
                 onPressed: () {
                   CoolAlert.show(
@@ -175,9 +180,9 @@ class _TawariScreenState extends State<TawariScreen> {
         .doc(uid)
         .get())['National ID'] as dynamic;
 
-    // final Uid = (await FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(FirebaseAuth.instance.currentUser!.uid));
+    final Uid = (await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid));
 
     if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
@@ -189,7 +194,8 @@ class _TawariScreenState extends State<TawariScreen> {
             'problem_desc': problemController.text,
             'problem_img': url,
             'Nationa ID': NationalID,
-            // 'Uid': Uid,
+            'Uid': Uid,
+            'author': Text(widget.title),
           },
           SetOptions(merge: true),
         ).then((value) async {
