@@ -11,16 +11,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // Location location = new Location();
-  // bool ison = await location.serviceEnabled();
-  // if(ison){
-  //   bool isturnedon = await location.requestService();
-  //   if (isturnedon){
-  //     print("GPS is turned ON");
-  //   }else{
-  //     print("GPS is turned OFF");
-  //   }
-  // }
   runApp(const MyApp());
 }
 
@@ -33,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: Colors.blue),
       routes: {
-        '/': (context) => const Auth(),
+        '/': (context) => const SplashScreen(),
         'signupScreen': (context) => const SignupScreen(),
         'loginScreen': (context) => const LoginScreen(),
         'homeScreen': (context) => HomeScreen(),
