@@ -110,10 +110,10 @@ class _TawariScreenState extends State<TawariScreen> {
                           child: CircularProgressIndicator(),
                         );
                       });
-                  currentLocation = await LocationService()
-                      .getCurrentLocation()
-                      .then((value) {
+                  await LocationService().getCurrentLocation().then((value) {
+                    currentLocation = value;
                     Navigator.pop(context);
+                    return value;
                   });
                 } else {
                   showDialog(
@@ -205,10 +205,6 @@ class _TawariScreenState extends State<TawariScreen> {
         .doc(uid)
         .get())['National ID'] as dynamic;
 
-    final Uid = (await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid));
-
     if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
         await FirebaseFirestore.instance.collection('requests').doc().set(
@@ -236,8 +232,6 @@ class _TawariScreenState extends State<TawariScreen> {
               }).then((value) => Navigator.pop(context));
         });
       }
-
-     
     }
   }
 
