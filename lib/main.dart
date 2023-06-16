@@ -7,6 +7,7 @@ import 'package:project2/Screens/SignUpScreen.dart';
 import 'package:project2/Screens/NoInternet.dart';
 import 'package:project2/Screens/page1.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,15 +20,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.blue),
-      routes: {
-        '/': (context) => const SplashScreen(),
-        'signupScreen': (context) => const SignupScreen(),
-        'loginScreen': (context) => const LoginScreen(),
-        'homeScreen': (context) => HomeScreen(),
-      },
+    return Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(primaryColor: Colors.blue),
+            routes: {
+              '/': (context) => const SplashScreen(),
+              'signupScreen': (context) => const SignupScreen(),
+              'loginScreen': (context) => const LoginScreen(),
+              'homeScreen': (context) => HomeScreen(),
+            },
+          );
+        }
     );
+
+
+
+
   }
 }

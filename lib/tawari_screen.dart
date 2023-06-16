@@ -6,10 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:location/location.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:project2/address_model,.dart';
 import 'package:project2/location_service.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 
 class TawariScreen extends StatefulWidget {
   final String title;
@@ -25,7 +27,6 @@ class _TawariScreenState extends State<TawariScreen> {
   final imagepicker = ImagePicker();
   final problemController = TextEditingController();
   bool isLoading = false;
-
   Position? currentLocation;
   AddressModel emptyLocation =
       const AddressModel(country: '', name: '', postalCode: '');
@@ -102,11 +103,42 @@ class _TawariScreenState extends State<TawariScreen> {
             ),
             TextButton.icon(
               onPressed: () async {
-                // CoolAlert.show(
-                //     barrierDismissible: false,
-                //     context: context,
-                //     type: CoolAlertType.loading);
-                currentLocation = await LocationService().getCurrentLocation();
+                if (await Permission
+                    .locationWhenInUse.serviceStatus.isEnabled) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  currentLocation = await LocationService()
+                      .getCurrentLocation()
+                      .then((value) {
+                    Navigator.pop(context);
+                  });
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Can't get gurrent location"),
+                        content: const Text(
+                            'Please make sure you enable GPS and try again'),
+                        actions: <Widget>[
+                        ElevatedButton( onPressed: () {
+                        final AndroidIntent intent = AndroidIntent(
+                            action: 'android.settings.LOCATION_SOURCE_SETTINGS');
+                        intent.launch();
+                        Navigator.of(context, rootNavigator: true).pop();
+
+                      },child: Text('Ok'),)
+
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               icon: const Icon(Icons.location_on_outlined),
               label: const Text(
@@ -114,11 +146,9 @@ class _TawariScreenState extends State<TawariScreen> {
                 style: TextStyle(fontSize: 17),
               ),
             ),
-            isLoading
-                ? const CircularProgressIndicator()
-                : const SizedBox(
-                    height: 12,
-                  ),
+            const SizedBox(
+              height: 12,
+            ),
             Container(
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(45)),
@@ -195,7 +225,7 @@ class _TawariScreenState extends State<TawariScreen> {
             'problem_img': url,
             'Nationa ID': NationalID,
             'Uid': Uid,
-            'author': Text(widget.title),
+            'author': widget.title,
           },
           SetOptions(merge: true),
         ).then((value) async {

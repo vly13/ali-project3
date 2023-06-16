@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class porposal extends StatelessWidget {
   porposal({Key? key}) : super(key: key);
@@ -47,15 +48,17 @@ class porposal extends StatelessWidget {
               SizedBox(height: 12),
               Container(
                 height: 33,
-                width: MediaQuery.of(context).size.width * 0.5,
+
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
                 child: ElevatedButton(
                   onPressed: () async {
+                    CoolAlert.show(context: context, type: CoolAlertType.loading);
                     if (_formkey.currentState!.validate()) {
                       final uid = FirebaseAuth.instance.currentUser!.uid;
-                      FirebaseFirestore.instance
+                      await FirebaseFirestore.instance
                           .collection("porposal")
-                          .doc()
-                          .set({
+
+                          .add({
                         "porposal": _porposalController,
                         "userName": (await FirebaseFirestore.instance
                             .collection('Users')
@@ -64,14 +67,14 @@ class porposal extends StatelessWidget {
                         "National ID": (await FirebaseFirestore.instance
                             .collection('Users')
                             .doc(uid)
-                            .get())['National ID'] as dynamic
-                      });
+                            .get())['National ID'] as int
+                      }).then((value) => Navigator.pop(context));
                     }
                   },
                   child: Text(
                     ' ارسال الأقتراح',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

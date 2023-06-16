@@ -294,6 +294,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            });
                         if (_formkey.currentState!.validate()) {
                           signUp();
                         }
