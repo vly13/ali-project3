@@ -48,18 +48,17 @@ class porposal extends StatelessWidget {
               SizedBox(height: 12),
               Container(
                 height: 33,
-
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
                 child: ElevatedButton(
                   onPressed: () async {
-                    CoolAlert.show(context: context, type: CoolAlertType.loading);
+                    CoolAlert.show(
+                        context: context, type: CoolAlertType.loading);
                     if (_formkey.currentState!.validate()) {
                       final uid = FirebaseAuth.instance.currentUser!.uid;
                       await FirebaseFirestore.instance
                           .collection("porposal")
-
                           .add({
-                        "porposal": _porposalController,
+                        "porposal": _porposalController.text,
                         "userName": (await FirebaseFirestore.instance
                             .collection('Users')
                             .doc(uid)
@@ -67,7 +66,7 @@ class porposal extends StatelessWidget {
                         "National ID": (await FirebaseFirestore.instance
                             .collection('Users')
                             .doc(uid)
-                            .get())['National ID'] as int
+                            .get())['National ID'] as String
                       }).then((value) => Navigator.pop(context));
                     }
                   },

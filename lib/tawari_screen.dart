@@ -24,7 +24,7 @@ class _TawariScreenState extends State<TawariScreen> {
   String image = '';
   final imagepicker = ImagePicker();
   final problemController = TextEditingController();
-  bool isLoading = false;
+
   Position? currentLocation;
   AddressModel emptyLocation =
       const AddressModel(country: '', name: '', postalCode: '');
@@ -103,14 +103,18 @@ class _TawariScreenState extends State<TawariScreen> {
               onPressed: () async {
                 if (await Permission
                     .locationWhenInUse.serviceStatus.isEnabled) {
-                  CoolAlert.show(context: context, type: CoolAlertType.loading);
-                  await LocationService().getCurrentLocation().then((value) {
-                    currentLocation = value;
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  currentLocation = await LocationService()
+                      .getCurrentLocation()
+                      .then((value) {
                     Navigator.pop(context);
-                    return value;
                   });
-
-                  print('location$currentLocation');
                 } else {
                   showDialog(
                     context: context,
@@ -151,13 +155,10 @@ class _TawariScreenState extends State<TawariScreen> {
               width: MediaQuery.of(context).size.width * 0.5,
               height: 33,
               child: ElevatedButton(
-                onPressed: () {
-                  CoolAlert.show(
-                      barrierDismissible: false,
-                      context: context,
-                      type: CoolAlertType.loading);
+                onPressed: () async {
+                  CoolAlert.show(context: context, type: CoolAlertType.loading);
                   if (problemController.text.isNotEmpty) {
-                    _uploadUserData();
+                    await _uploadUserData();
                   }
                 },
                 child: const Text(
@@ -190,7 +191,7 @@ class _TawariScreenState extends State<TawariScreen> {
     return '';
   }
 
-  void _uploadUserData() async {
+  Future<void> _uploadUserData() async {
     final url = await uploadImage();
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -202,9 +203,11 @@ class _TawariScreenState extends State<TawariScreen> {
     final NationalID = (await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
-        .get())['National ID'] as String;
+        .get())['National ID'] as dynamic;
 
-    print('currentlocation: $currentLocation');
+    final Uid = (await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid));
 
     if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
@@ -233,6 +236,9 @@ class _TawariScreenState extends State<TawariScreen> {
               }).then((value) => Navigator.pop(context));
         });
       }
+
+      isLoading = false;
+      setState(() {});
     }
   }
 

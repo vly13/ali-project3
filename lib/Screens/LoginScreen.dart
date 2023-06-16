@@ -99,12 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           });
                       try {
-                        UserCredential userCredential = await FirebaseAuth
-                            .instance
-                            .signInWithEmailAndPassword(
-                          email: _emilController.text,
-                          password: _passwordController.text,
-                        );
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           ScaffoldMessenger.of(context).showSnackBar(

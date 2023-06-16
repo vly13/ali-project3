@@ -10,8 +10,6 @@ class Bar extends StatefulWidget {
 
 class _BarState extends State<Bar> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     porposal(),

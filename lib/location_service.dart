@@ -1,20 +1,7 @@
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'address_model,.dart';
 
 class LocationService {
-  Future<AddressModel> _getAddressFromLatLong(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark placemark = placemarks[0];
-   
-    return AddressModel(
-      name: placemark.name!,
-      postalCode: placemark.postalCode!,
-      country: placemark.country!,
-    );
-  }
 
   Future<Position> getCurrentLocation() async {
     bool serviceEnabled;

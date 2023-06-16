@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class Home extends StatelessWidget {
   List tawari = [
     {"name": "اسعاف", "screen": "images/iseaf.png"},

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ignore: use_key_in_widget_constructors
+// ignore: use_key_in_widget_constructors, must_be_immutable
 class HomeScreen extends StatelessWidget {
   List tawari = [
     {"name": "اسعاف", "screen": "images/isaaf2.png"},
