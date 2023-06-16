@@ -8,10 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project2/address_model,.dart';
 import 'package:project2/location_service.dart';
-import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:android_intent_plus/flag.dart';
 
 class TawariScreen extends StatefulWidget {
   final String title;
@@ -105,18 +103,14 @@ class _TawariScreenState extends State<TawariScreen> {
               onPressed: () async {
                 if (await Permission
                     .locationWhenInUse.serviceStatus.isEnabled) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      });
-                  currentLocation = await LocationService()
-                      .getCurrentLocation()
-                      .then((value) {
+                  CoolAlert.show(context: context, type: CoolAlertType.loading);
+                  await LocationService().getCurrentLocation().then((value) {
+                    currentLocation = value;
                     Navigator.pop(context);
+                    return value;
                   });
+
+                  print('location$currentLocation');
                 } else {
                   showDialog(
                     context: context,
@@ -126,14 +120,16 @@ class _TawariScreenState extends State<TawariScreen> {
                         content: const Text(
                             'Please make sure you enable GPS and try again'),
                         actions: <Widget>[
-                        ElevatedButton( onPressed: () {
-                        final AndroidIntent intent = AndroidIntent(
-                            action: 'android.settings.LOCATION_SOURCE_SETTINGS');
-                        intent.launch();
-                        Navigator.of(context, rootNavigator: true).pop();
-
-                      },child: Text('Ok'),)
-
+                          ElevatedButton(
+                            onPressed: () {
+                              final AndroidIntent intent = AndroidIntent(
+                                  action:
+                                      'android.settings.LOCATION_SOURCE_SETTINGS');
+                              intent.launch();
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                            child: Text('Ok'),
+                          )
                         ],
                       );
                     },
@@ -187,8 +183,6 @@ class _TawariScreenState extends State<TawariScreen> {
     final snanpshot = await storageRef.putFile(File(image));
 
     if (snanpshot.state == TaskState.running) {
-      isLoading = true;
-      setState(() {});
       return '';
     } else if (snanpshot.state == TaskState.success) {
       return await storageRef.getDownloadURL();
@@ -208,11 +202,9 @@ class _TawariScreenState extends State<TawariScreen> {
     final NationalID = (await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
-        .get())['National ID'] as dynamic;
+        .get())['National ID'] as String;
 
-    final Uid = (await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid));
+    print('currentlocation: $currentLocation');
 
     if (userName.isNotEmpty && currentLocation != null) {
       if (url.isNotEmpty) {
@@ -224,7 +216,7 @@ class _TawariScreenState extends State<TawariScreen> {
             'problem_desc': problemController.text,
             'problem_img': url,
             'Nationa ID': NationalID,
-            'Uid': Uid,
+            'Uid': uid,
             'author': widget.title,
           },
           SetOptions(merge: true),
@@ -241,9 +233,6 @@ class _TawariScreenState extends State<TawariScreen> {
               }).then((value) => Navigator.pop(context));
         });
       }
-
-      isLoading = false;
-      setState(() {});
     }
   }
 

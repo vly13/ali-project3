@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,9 @@ class _SignupScreenState extends State<SignupScreen> {
       "City": _cityController.text,
       "National ID": _nationalIDController.text,
       "Phone Number": _phoneNumberController.text,
-    });
+    }).then((value) => Navigator.pop(context));
   }
+
   void loginScreen() {
     Navigator.of(context).pushReplacementNamed('loginScreen');
   }
@@ -294,13 +296,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            });
+                        CoolAlert.show(
+                            context: context, type: CoolAlertType.loading);
                         if (_formkey.currentState!.validate()) {
                           signUp();
                         }
