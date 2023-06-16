@@ -237,8 +237,7 @@ class _TawariScreenState extends State<TawariScreen> {
         });
       }
 
-      isLoading = false;
-      setState(() {});
+     
     }
   }
 
